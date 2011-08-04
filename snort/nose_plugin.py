@@ -10,6 +10,7 @@ def _IN_PACKAGE(p):
 
 _SUCCESS_ICON = pkg_resources.resource_filename("snort", "success.png")
 _FAILURE_ICON = pkg_resources.resource_filename("snort", "failure.png")
+_SKIP_ICON    = pkg_resources.resource_filename("snort", "skip.png")
 _PYTHON_ICON  = pkg_resources.resource_filename("snort", "python.png")
 
 class NosePlugin(Plugin):
@@ -21,6 +22,8 @@ class NosePlugin(Plugin):
 
     def _growl_success(self, title, message):
         return self._growl(title, message, _SUCCESS_ICON)
+    def _growl_skip(self, title, message):
+        return self._growl(title, message, _SKIP_ICON)
     def _growl_failure(self, title, message):
         return self._growl(title, message, _FAILURE_ICON)
 
@@ -63,7 +66,13 @@ class NosePlugin(Plugin):
         delta = self.finish_time - self.start_time
         endtime_msg = 'Completed in  %s.%s seconds' % (delta.seconds, delta.microseconds)
         if result.wasSuccessful():
-            self._growl_success("%s tests run ok" % result.testsRun, endtime_msg)
+            msg = "{0} tests run ok.".format(result.testsRun - len(result.skipped))
+            if result.skipped:
+                msg += " {0} skipped.".format(len(result.skipped))
+                func = self._growl_skip
+            else:
+                func = self._growl_success
+            func(msg, endtime_msg)
         else:
             self._growl_failure("%s tests. %s failed, %s errors" % (result.testsRun, len(result.failures), len(result.errors)), endtime_msg)
 
