@@ -58,7 +58,7 @@ class GenericPlugin(object):
         if sticky:
             cmdline += " -s"
         p = subprocess.Popen(cmdline, shell=True, stdin=subprocess.PIPE, close_fds=True)
-        p.stdin.write(message)
+        p.stdin.write(message.encode('utf-8'))
         p.stdin.close()
         result = p.wait()
         if result != 0:
