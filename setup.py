@@ -17,6 +17,7 @@ setup(name="snort",
       packages=find_packages(exclude=["tests"]),
       install_requires=[],
       scripts=[],
+      zip_safe=False,
       namespace_packages=[],
       package_data = {
           '' : ["*.png"],
