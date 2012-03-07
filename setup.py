@@ -20,7 +20,7 @@ setup(name="snort",
       zip_safe=False,
       namespace_packages=[],
       package_data = {
-          '' : ["*.png"],
+          'snort' : ["snort/*.png"],
           },
       entry_points = {
           'nose.plugins' : [
