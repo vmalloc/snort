@@ -22,6 +22,7 @@ setup(name="snort",
       package_data = {
           'snort' : ["snort/*.png"],
           },
+      include_package_data = True,
       entry_points = {
           'nose.plugins' : [
               'snort = snort.nose_plugin:NosePlugin',
